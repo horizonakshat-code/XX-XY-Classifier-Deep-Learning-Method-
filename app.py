@@ -108,20 +108,18 @@ if uploaded:
     img = np.array(img)/255.0
 
     img = np.expand_dims(img,axis=0)
+    img = img.astype(np.float32)
 
     with st.spinner("Analyzing image..."):
 
         prediction = model.predict(img,verbose=0)[0][0]
-
-    if prediction>0.5:
-
-        label="👨 Male"
-        confidence=prediction*100
-
+    if prediction > 0.5:
+        label = "👨 Male"
+        confidence = float(prediction * 100)
+    
     else:
-
-        label="👩 Female"
-        confidence=(1-prediction)*100
+        label = "👩 Female"
+        confidence = float((1 - prediction) * 100)
 
     with col2:
 
@@ -135,7 +133,7 @@ if uploaded:
 
         <br>
 
-        <h3>Confidence</h3>
+       <h3>Confidence: {confidence:.2f}%</h3>
 
         </div>
 
@@ -143,7 +141,7 @@ if uploaded:
         unsafe_allow_html=True
         )
 
-        st.progress(confidence/100)
+        st.progress(int(confidence))
 
         st.metric(
             "Confidence",
